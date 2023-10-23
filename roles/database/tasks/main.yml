@@ -1,0 +1,33 @@
+---
+- name: Install PostgreSQL
+  apt:
+    name: postgresql
+    state: present
+
+- name: Create a PostgreSQL database
+  become: yes
+  become_user: postgres
+  command: >
+    psql -c "CREATE DATABASE {{ database_name }}"
+    || true
+  ignore_errors: yes
+
+- name: Create a PostgreSQL user
+  become: yes
+  become_user: postgres
+  command: >
+    psql -c "CREATE USER {{ database_user }} WITH PASSWORD '{{ database_password }}'"
+    || true
+  ignore_errors: yes
+
+- name: Grant privileges to PostgreSQL user
+  become: yes
+  become_user: postgres
+  command: >
+    psql -c "ALTER ROLE {{ database_user }} SET client_encoding TO 'utf8'; \
+    ALTER ROLE {{ database_user }} SET default_transaction_isolation TO 'read committed'; \
+    ALTER ROLE {{ database_user }} SET timezone TO 'UTC'; \
+    GRANT ALL PRIVILEGES ON DATABASE {{ database_name }} TO {{ database_user }}; \
+    ALTER DATABASE {{ database_name }} OWNER TO {{ database_user }};"
+  ignore_errors: yes
+...

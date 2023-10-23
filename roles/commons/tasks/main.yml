@@ -1,0 +1,6 @@
+---
+ - name: Update Server centos
+   become: yes
+   yum:
+     update_cache: yes
+...

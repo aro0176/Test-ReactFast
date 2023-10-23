@@ -1,0 +1,50 @@
+---
+ - name: Création Dossier
+   file:
+     path: "{{ backend_app_directory }}"
+     state: directory
+     owner: "{{ user }}"
+     group: "{{ user }}"
+     mode: 0775
+
+ - name: Lien vers www
+   become: yes
+   file:
+     src: "{{ backend_app_directory }}"
+     dest: /var/www/backend
+     state: link
+     owner: "{{ user }}"
+     group: "{{ user }}"
+     mode: 0755
+
+ - name: Clonez backend
+   git:
+     repo: https://github.com/Herilanto003/fast-back.git
+     dest: "{{ backend_app_directory }}/"
+
+ - name: Créer un environnement virtuel et activé l'env
+   command: python3 -m venv "{{ backend_app_directory }}/venv" && source "{{ backend_app_directory}}/venv/bin/activate"
+   become: yes
+  
+ - name: Install backend dependencies
+   pip:
+     requirements: "{{ backend_app_directory }}/requirements.txt"
+
+# - name: Install dependencies
+#   command: pip install -r "{{ backend_app_directory }}/requirements.text"
+
+ - name: Configurer le virtual host pour l'application Fast
+   template:
+     src: ../templates/backend_vhost.conf.j2
+     dest: /etc/apache2/sites-available/backend.conf
+   notify: Restart apache
+ 
+ - name: Activer le site
+   command: a2ensite backend.conf
+   args:
+     warn: no
+   notify: Restart apache
+
+ - name: Démarrer le back
+   command: uvicorn "{{ backend_app_directory }}/main:app"
+...

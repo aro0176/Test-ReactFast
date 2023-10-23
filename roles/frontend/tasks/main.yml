@@ -1,0 +1,16 @@
+---
+ - name: Install Nodejs and npm
+   become: yes
+   apt:
+     name: "{{ item }}"
+     state: latest
+   loop: "{{ front }}"
+
+# - name: Copy frontend files to the server
+#   copy:
+#     src: /home/ansible/Deploy_react_fast/react-admin-vite/
+#     dest: /var/www/frontend
+
+ - name: Configuration site
+   include: site.yml
+...

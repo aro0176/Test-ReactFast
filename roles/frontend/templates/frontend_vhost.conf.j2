@@ -1,0 +1,14 @@
+ <VirtualHost *:80>
+     ServerName exemple.apmf.com
+     DocumentRoot /var/www/frontend
+     
+     <Directory /var/www/frontend>
+         Options Indexes FollowSymLinks MultiViews
+         AllowOverride All
+         Require all granted
+     </Directory>
+
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
+ </VirtualHost>
+

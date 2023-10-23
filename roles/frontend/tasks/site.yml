@@ -1,0 +1,51 @@
+---
+
+ - name: Création dossier
+   file:
+     path: "{{ frontend_app_directory }}"
+     state: directory
+     owner: "{{ user }}"
+     group: "{{ user }}"
+     mode: 0775
+
+ - name: Lien vers www
+   become: yes
+   file:
+     src: "{{ frontend_app_directory }}"
+     dest: /var/www/frontend
+     state: link
+     owner: "{{ user }}"
+     group: "{{ user }}"
+     mode: 0755
+ 
+ - name: Clonez le référentiel Git du frontend
+   git:
+     repo: https://github.com/Herilanto003/react-front.git
+     dest: "{{ frontend_app_directory }}/"
+
+# PAS BESOIN INSTALLER LES DEPENDANCES CAR L'APP EST DéJà BUILé
+# - name: Install npm install dependenciee
+#   command: npm install
+#   args:
+#     chdir: "{{ frontend_app_directory }}/"
+#   become_user: "{{ user }}"
+
+# - name: Build the React.js app
+#   command: npm run build
+#   args:
+#     chdir: "{{ frontend_app_directory }}/"
+#   become_user: "{{ user }}"
+
+ - name: Configurer le virtual host pour l'application ReactJs
+   template:
+     src: ../templates/frontend_vhost.conf.j2
+     dest: /etc/apache2/sites-available/frontend.conf
+   notify: Restart apache
+
+ - name: Activer le site
+   command: a2ensite frontend.conf
+   args:
+     warn: no
+   notify: Restart apache
+
+...

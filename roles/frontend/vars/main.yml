@@ -1,0 +1,4 @@
+---
+ frontend_app_directory1: /home/ansible/Deploy_react_fast/react-admin-vite
+ frontend_app_directory: /home/{{ user }}/frontend
+...

@@ -1,0 +1,11 @@
+---
+# - name: Installation packages
+#   apt:
+#     name: "{{ item }}"
+#     state: latest
+#   become: yes
+#   with_items: "{{ backs }}"
+
+ - name: Configuration backend
+   include: back.yml
+...
