@@ -20,21 +20,20 @@
  
  - name: Clonez le référentiel Git du frontend
    git:
-     repo: https://github.com/Herilanto003/react-front.git
+     repo: " GIT LINK "
      dest: "{{ frontend_app_directory }}/"
 
-# PAS BESOIN INSTALLER LES DEPENDANCES CAR L'APP EST DéJà BUILé
-# - name: Install npm install dependenciee
-#   command: npm install
-#   args:
-#     chdir: "{{ frontend_app_directory }}/"
-#   become_user: "{{ user }}"
+ - name: Install npm install dependenciee
+   command: npm install
+   args:
+     chdir: "{{ frontend_app_directory }}/"
+   become_user: "{{ user }}"
 
-# - name: Build the React.js app
-#   command: npm run build
-#   args:
-#     chdir: "{{ frontend_app_directory }}/"
-#   become_user: "{{ user }}"
+ - name: Build the React.js app
+   command: npm run build
+   args:
+     chdir: "{{ frontend_app_directory }}/"
+   become_user: "{{ user }}"
 
  - name: Configurer le virtual host pour l'application ReactJs
    template:
