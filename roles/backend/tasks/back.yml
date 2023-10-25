@@ -19,7 +19,7 @@
 
  - name: Clonez backend
    git:
-     repo: https://github.com/Herilanto003/fast-back.git
+     repo: " GIT LINK FASTAPI "
      dest: "{{ backend_app_directory }}/"
 
  - name: Créer un environnement virtuel et activé l'env
@@ -29,9 +29,6 @@
  - name: Install backend dependencies
    pip:
      requirements: "{{ backend_app_directory }}/requirements.txt"
-
-# - name: Install dependencies
-#   command: pip install -r "{{ backend_app_directory }}/requirements.text"
 
  - name: Configurer le virtual host pour l'application Fast
    template:
